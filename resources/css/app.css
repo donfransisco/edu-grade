@@ -1,9 +1,156 @@
 @import 'tailwindcss';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/laravel/breeze/resources/views/**/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
+/*
+ * EduGrade Design System
+ * Binance-inspired dark canvas with yellow accent
+ * Applied to an academic grade management platform
+ */
+
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-edu-dark: #0b0e11;
+    --color-edu-card: #1e2329;
+    --color-edu-elevated: #2b3139;
+    --color-edu-surface: #2b3139;
+    --color-edu-yellow: #FCD535;
+    --color-edu-yellow-active: #f0b90b;
+    --color-edu-yellow-disabled: #3a3a1f;
+    --color-edu-text: #eaecef;
+    --color-edu-muted: #707a8a;
+    --color-edu-muted-strong: #929aa5;
+    --color-edu-hairline: #2b3139;
+    --color-edu-hairline-light: #eaecef;
+    --color-edu-ink: #181a20;
+    --color-edu-white: #ffffff;
+    --color-edu-surface-soft: #fafafa;
+    --color-edu-success: #0ecb81;
+    --color-edu-danger: #f6465d;
+    --color-edu-info: #3b82f6;
+
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Base layer */
+@layer base {
+    body {
+        @apply bg-edu-dark text-edu-text antialiased;
+    }
+
+    ::selection {
+        @apply bg-edu-yellow/30 text-edu-text;
+    }
+
+    ::-webkit-scrollbar {
+        @apply w-2;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-edu-dark;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-edu-elevated rounded-full;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-edu-muted;
+    }
+}
+
+/* Component layer */
+@layer components {
+    .edu-card {
+        @apply bg-edu-card rounded-xl p-6;
+    }
+
+    .edu-card-elevated {
+        @apply bg-edu-elevated rounded-xl p-6;
+    }
+
+    .edu-btn-primary {
+        @apply inline-flex items-center justify-center px-6 py-2.5
+               bg-edu-yellow text-edu-ink font-semibold text-sm
+               rounded-lg
+               hover:bg-edu-yellow-active
+               active:scale-[0.98]
+               transition-all duration-150
+               focus:outline-none focus:ring-2 focus:ring-edu-yellow/50 focus:ring-offset-2 focus:ring-offset-edu-dark;
+    }
+
+    .edu-btn-secondary {
+        @apply inline-flex items-center justify-center px-6 py-2.5
+               bg-edu-card text-edu-text font-semibold text-sm
+               border border-edu-hairline rounded-lg
+               hover:bg-edu-elevated
+               active:scale-[0.98]
+               transition-all duration-150
+               focus:outline-none focus:ring-2 focus:ring-edu-muted/50 focus:ring-offset-2 focus:ring-offset-edu-dark;
+    }
+
+    .edu-btn-danger {
+        @apply inline-flex items-center justify-center px-6 py-2.5
+               bg-edu-danger text-white font-semibold text-sm
+               rounded-lg
+               hover:opacity-90
+               active:scale-[0.98]
+               transition-all duration-150
+               focus:outline-none focus:ring-2 focus:ring-edu-danger/50 focus:ring-offset-2 focus:ring-offset-edu-dark;
+    }
+
+    .edu-input {
+        @apply w-full bg-edu-card border border-edu-hairline rounded-lg px-4 py-2.5
+               text-sm text-edu-text placeholder-edu-muted
+               focus:border-edu-yellow/50 focus:ring-1 focus:ring-edu-yellow/30
+               focus:outline-none
+               transition-colors duration-150;
+    }
+
+    .edu-label {
+        @apply block text-sm font-medium text-edu-muted-strong mb-1.5;
+    }
+
+    .edu-badge {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    }
+
+    .edu-stat-number {
+        @apply text-3xl font-bold font-mono tracking-tight;
+    }
+
+    .edu-section-title {
+        @apply text-2xl font-bold text-edu-text tracking-tight;
+    }
+
+    .edu-sidebar-link {
+        @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+               text-edu-muted
+               hover:bg-edu-card hover:text-edu-text
+               transition-colors duration-150;
+    }
+
+    .edu-sidebar-link-active {
+        @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+               bg-edu-yellow/10 text-edu-yellow;
+    }
+
+    .edu-table {
+        @apply w-full text-sm text-left;
+    }
+
+    .edu-table thead {
+        @apply text-xs text-edu-muted uppercase tracking-wider border-b border-edu-hairline;
+    }
+
+    .edu-table tbody tr {
+        @apply border-b border-edu-hairline/50 hover:bg-edu-card/50 transition-colors duration-100;
+    }
+
+    .edu-table td,
+    .edu-table th {
+        @apply px-4 py-3;
+    }
 }
