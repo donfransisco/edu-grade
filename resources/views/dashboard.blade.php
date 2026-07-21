@@ -4,7 +4,7 @@
     </x-slot>
 
     <div class="space-y-6">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <a href="{{ route('students.index') }}" class="edu-card border border-edu-hairline hover:border-edu-yellow/30 transition-colors group cursor-pointer">
                 <div class="flex items-center justify-between">
                     <div>
@@ -62,8 +62,106 @@
             </a>
         </div>
 
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="edu-card border border-edu-hairline">
+                <h3 class="text-base font-semibold text-edu-text mb-4">Distribusi Grade</h3>
+                @php
+                    $maxCount = max(array_merge(array_values($stats['gradeDistribution']), [1]));
+                    $total = max(array_sum($stats['gradeDistribution']), 1);
+                    $colors = ['A' => 'bg-edu-success', 'B' => 'bg-edu-info', 'C' => 'bg-edu-yellow', 'D' => 'bg-edu-muted', 'E' => 'bg-edu-danger'];
+                @endphp
+                <div class="flex items-end justify-between gap-2 h-32">
+                    @foreach ($stats['gradeDistribution'] as $grade => $count)
+                        @php
+                            $barH = $maxCount > 0 ? max(($count / $maxCount) * 100, 4) : 4;
+                        @endphp
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <span class="text-xs font-semibold text-edu-text">{{ $count }}</span>
+                            <div class="w-full flex items-end justify-center" style="height: 80px">
+                                <div class="w-full max-w-[2rem] {{ $colors[$grade] }} rounded-t transition-all" style="height: {{ $barH }}%"></div>
+                            </div>
+                            <span class="text-xs font-medium text-edu-muted">{{ $grade }}</span>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="edu-card border border-edu-hairline">
+                <h3 class="text-base font-semibold text-edu-text mb-4">Mata Kuliah Populer</h3>
+                @if ($stats['popularCourses']->count())
+                    <div class="space-y-3">
+                        @foreach ($stats['popularCourses'] as $course)
+                            <div class="flex items-center justify-between">
+                                <div class="min-w-0">
+                                    <p class="text-sm text-edu-text truncate">{{ $course->nama }}</p>
+                                    <p class="text-xs text-edu-muted">{{ $course->lecturer?->nama ?? '-' }}</p>
+                                </div>
+                                <span class="text-xs font-mono text-edu-yellow shrink-0 ml-3">{{ $course->grades_count }} nilai</span>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <x-empty-state title="Belum ada data" description="Data mata kuliah populer akan muncul di sini." />
+                @endif
+            </div>
+
+            <div class="edu-card border border-edu-hairline">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-base font-semibold text-edu-text">Mahasiswa Terbaru</h3>
+                    <a href="{{ route('students.index') }}" class="text-xs text-edu-yellow hover:underline">Lihat Semua</a>
+                </div>
+                @if ($stats['recentStudents']->count())
+                    <div class="space-y-3">
+                        @foreach ($stats['recentStudents'] as $student)
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-edu-elevated border border-edu-hairline flex items-center justify-center text-xs font-bold text-edu-yellow shrink-0">
+                                    {{ strtoupper(substr($student->nama, 0, 1)) }}
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="text-sm text-edu-text truncate">{{ $student->nama }}</p>
+                                    <p class="text-xs text-edu-muted font-mono">{{ $student->nim }}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <x-empty-state title="Belum ada data" description="Data mahasiswa terbaru akan muncul di sini." />
+                @endif
+            </div>
+        </div>
+
         <div class="edu-card border border-edu-hairline">
-            <h2 class="text-base font-semibold text-edu-text mb-4">Nilai Terakhir</h2>
+            <h3 class="text-base font-semibold text-edu-text mb-4">IPK Rata-rata per Semester</h3>
+            @php
+                $ipkData = $stats['avgGpaBySemester'];
+                $maxGpa = max(array_merge(array_values($ipkData), [4.0]));
+            @endphp
+            @if (count($ipkData))
+                <div class="flex items-end justify-between gap-2 h-40">
+                    @for ($i = 1; $i <= 8; $i++)
+                        @php
+                            $gpa = $ipkData[$i] ?? 0;
+                            $barH = $maxGpa > 0 ? max(($gpa / $maxGpa) * 100, 4) : 4;
+                        @endphp
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <span class="text-xs font-semibold text-edu-text">{{ $gpa > 0 ? number_format($gpa, 2) : '-' }}</span>
+                            <div class="w-full flex items-end justify-center" style="height: 100px">
+                                <div class="w-full max-w-[2.5rem] bg-edu-yellow rounded-t transition-all" style="height: {{ $gpa > 0 ? $barH : 2 }}%"></div>
+                            </div>
+                            <span class="text-xs font-medium text-edu-muted">S{{ $i }}</span>
+                        </div>
+                    @endfor
+                </div>
+            @else
+                <x-empty-state title="Belum ada data" description="Data IPK per semester akan muncul di sini." />
+            @endif
+        </div>
+
+        <div class="edu-card border border-edu-hairline">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-base font-semibold text-edu-text">Nilai Terakhir</h2>
+                <a href="{{ route('grades.index') }}" class="text-xs text-edu-yellow hover:underline">Lihat Semua</a>
+            </div>
 
             @if ($stats['recentGrades']->count())
                 <div class="overflow-x-auto">
@@ -79,8 +177,8 @@
                         <tbody>
                             @foreach ($stats['recentGrades'] as $grade)
                                 <tr>
-                                    <td class="px-4 py-3 text-sm text-edu-text">{{ $grade->student->nama }}</td>
-                                    <td class="px-4 py-3 text-sm text-edu-muted">{{ $grade->course->kode }} - {{ $grade->course->nama }}</td>
+                                    <td class="px-4 py-3 text-sm text-edu-text">{{ $grade->student?->nama ?? '-' }}</td>
+                                    <td class="px-4 py-3 text-sm text-edu-muted">{{ $grade->course?->kode ?? '-' }} - {{ $grade->course?->nama ?? '-' }}</td>
                                     <td class="px-4 py-3 text-sm font-mono text-edu-text">{{ number_format($grade->nilai, 2) }}</td>
                                     <td class="px-4 py-3">
                                         <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold

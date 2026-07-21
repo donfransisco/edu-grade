@@ -39,30 +39,38 @@
         <div class="edu-card border border-edu-hairline overflow-hidden p-0">
             @if ($grades->count())
                 <div class="overflow-x-auto">
-                    <table class="edu-table">
+                    <table class="edu-table" style="table-layout: fixed; width: 100%;">
+                        <colgroup>
+                            <col style="width: 22%">
+                            <col style="width: 28%">
+                            <col style="width: 8%">
+                            <col style="width: 14%">
+                            <col style="width: 16%">
+                            <col style="width: 12%">
+                        </colgroup>
                         <thead>
                             <tr>
-                                <th class="px-4 py-3">NIM</th>
-                                <th class="px-4 py-3">Mahasiswa</th>
-                                <th class="px-4 py-3">Mata Kuliah</th>
-                                <th class="px-4 py-3">Semester</th>
-                                <th class="px-4 py-3">Tahun Akademik</th>
-                                <th class="px-4 py-3 text-right">Nilai</th>
-                                <th class="px-4 py-3 text-right">Grade</th>
-                                <th class="px-4 py-3 text-right">Aksi</th>
+                                <th class="px-3 py-2">Mahasiswa</th>
+                                <th class="px-3 py-2">Mata Kuliah</th>
+                                <x-table-header-sort label="Sem" field="semester" :sort-by="request('sort_by', 'created_at')" :sort-dir="request('sort_dir', 'desc')" :base-url="route('grades.index')" />
+                                <th class="px-3 py-2">Tahun</th>
+                                <x-table-header-sort label="Nilai" field="nilai" :sort-by="request('sort_by', 'created_at')" :sort-dir="request('sort_dir', 'desc')" :base-url="route('grades.index')" />
+                                <th class="px-3 py-2 text-right">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($grades as $grade)
                                 <tr>
-                                    <td class="px-4 py-3 font-mono text-sm text-edu-muted">{{ $grade->student->nim }}</td>
-                                    <td class="px-4 py-3 text-sm text-edu-text">{{ $grade->student->nama }}</td>
-                                    <td class="px-4 py-3 text-sm text-edu-text">{{ $grade->course->kode }} - {{ $grade->course->nama }}</td>
-                                    <td class="px-4 py-3 text-sm text-edu-muted">{{ $grade->semester }}</td>
-                                    <td class="px-4 py-3 text-sm text-edu-muted">{{ $grade->tahun_akademik }}</td>
-                                    <td class="px-4 py-3 text-right text-sm font-mono text-edu-text">{{ number_format($grade->nilai, 2) }}</td>
-                                    <td class="px-4 py-3 text-right">
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold
+                                    <td class="px-3 py-2">
+                                        <p class="text-sm text-edu-text truncate">{{ $grade->student->nama }}</p>
+                                        <p class="text-sm text-edu-muted font-mono truncate">{{ $grade->student->nim }}</p>
+                                    </td>
+                                    <td class="px-3 py-2 text-sm text-edu-text truncate">{{ $grade->course->kode }} - {{ $grade->course->nama }}</td>
+                                    <td class="px-3 py-2 text-sm text-edu-muted text-center">{{ $grade->semester }}</td>
+                                    <td class="px-3 py-2 text-sm text-edu-muted truncate">{{ $grade->tahun_akademik }}</td>
+                                    <td class="px-3 py-2 text-right whitespace-nowrap">
+                                        <span class="text-sm font-mono text-edu-text">{{ number_format($grade->nilai, 2) }}</span>
+                                        <span class="ml-1 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-semibold
                                             {{ match($grade->grade) {
                                                 'A' => 'bg-edu-success/15 text-edu-success',
                                                 'B' => 'bg-edu-info/15 text-edu-info',
@@ -73,7 +81,7 @@
                                             {{ $grade->grade }}
                                         </span>
                                     </td>
-                                    <td class="px-4 py-3 text-right">
+                                    <td class="px-3 py-2 text-right">
                                         <div class="flex items-center justify-end gap-1">
                                             <a href="{{ route('grades.edit', $grade) }}" class="p-1.5 rounded-lg text-edu-muted hover:text-edu-yellow hover:bg-edu-yellow/10 transition-colors" title="Edit">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>

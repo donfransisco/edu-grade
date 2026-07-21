@@ -126,10 +126,15 @@ class CrudPageTest extends TestCase
         $student = Student::factory()->create();
         $lecturer = Lecturer::factory()->create();
         $course = Course::factory()->create(['lecturer_id' => $lecturer->id]);
-        Grade::factory()->count(3)->create([
-            'student_id' => $student->id,
-            'course_id' => $course->id,
-        ]);
+        $semesters = ['2023/2024', '2023/2025', '2024/2026'];
+        foreach (range(1, 3) as $i) {
+            Grade::factory()->create([
+                'student_id' => $student->id,
+                'course_id' => $course->id,
+                'semester' => $i,
+                'tahun_akademik' => $semesters[$i - 1],
+            ]);
+        }
         $response = $this->get(route('transcripts.show', $student));
         $response->assertStatus(200);
         $response->assertDontSee('Undefined variable');
@@ -140,10 +145,15 @@ class CrudPageTest extends TestCase
         $student = Student::factory()->create();
         $lecturer = Lecturer::factory()->create();
         $course = Course::factory()->create(['lecturer_id' => $lecturer->id]);
-        Grade::factory()->count(5)->create([
-            'student_id' => $student->id,
-            'course_id' => $course->id,
-        ]);
+        $semesters = ['2023/2024', '2023/2025', '2024/2026', '2025/2026', '2025/2027'];
+        foreach (range(1, 5) as $i) {
+            Grade::factory()->create([
+                'student_id' => $student->id,
+                'course_id' => $course->id,
+                'semester' => $i,
+                'tahun_akademik' => $semesters[$i - 1],
+            ]);
+        }
         $response = $this->get(route('reports.index'));
         $response->assertStatus(200);
         $response->assertDontSee('Undefined variable');
@@ -154,10 +164,15 @@ class CrudPageTest extends TestCase
         $student = Student::factory()->create();
         $lecturer = Lecturer::factory()->create();
         $course = Course::factory()->create(['lecturer_id' => $lecturer->id]);
-        Grade::factory()->count(3)->create([
-            'student_id' => $student->id,
-            'course_id' => $course->id,
-        ]);
+        $semesters = ['2023/2024', '2023/2025', '2024/2026'];
+        foreach (range(1, 3) as $i) {
+            Grade::factory()->create([
+                'student_id' => $student->id,
+                'course_id' => $course->id,
+                'semester' => $i,
+                'tahun_akademik' => $semesters[$i - 1],
+            ]);
+        }
         $response = $this->get(route('reports.export'));
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'text/csv; charset=UTF-8');

@@ -12,7 +12,7 @@
         <div class="edu-card border border-edu-hairline">
             <div class="flex items-start justify-between">
                 <div>
-                    <p class="text-xs text-edu-muted uppercase tracking-wider">Kode</p>
+                    <p class="text-sm text-edu-muted uppercase tracking-wider">Kode</p>
                     <p class="mt-1 text-lg font-bold font-mono text-edu-yellow">{{ $course->kode }}</p>
                     <h2 class="text-xl font-bold text-edu-text mt-2">{{ $course->nama }}</h2>
                 </div>
@@ -24,16 +24,16 @@
 
             <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-edu-hairline">
                 <div>
-                    <p class="text-xs text-edu-muted uppercase tracking-wider">Dosen Pengampu</p>
+                    <p class="text-sm text-edu-muted uppercase tracking-wider">Dosen Pengampu</p>
                     <p class="mt-1 text-sm text-edu-text">{{ $course->lecturer?->nama ?? '-' }}</p>
-                    <p class="text-xs text-edu-muted">{{ $course->lecturer?->nidn ?? '' }}</p>
+                    <p class="text-sm text-edu-muted">{{ $course->lecturer?->nidn ?? '' }}</p>
                 </div>
                 <div>
-                    <p class="text-xs text-edu-muted uppercase tracking-wider">SKS</p>
+                    <p class="text-sm text-edu-muted uppercase tracking-wider">SKS</p>
                     <p class="mt-1 text-sm text-edu-text">{{ $course->sks }}</p>
                 </div>
                 <div>
-                    <p class="text-xs text-edu-muted uppercase tracking-wider">Semester</p>
+                    <p class="text-sm text-edu-muted uppercase tracking-wider">Semester</p>
                     <p class="mt-1 text-sm text-edu-text">{{ $course->semester }}</p>
                 </div>
             </div>
@@ -44,26 +44,33 @@
 
             @if ($course->grades->count())
                 <div class="overflow-x-auto">
-                    <table class="edu-table">
+                    <table class="edu-table" style="table-layout: fixed; width: 100%;">
+                        <colgroup>
+                            <col style="width: 45%">
+                            <col style="width: 12%">
+                            <col style="width: 23%">
+                            <col style="width: 20%">
+                        </colgroup>
                         <thead>
                             <tr>
-                                <th class="px-4 py-3">NIM</th>
-                                <th class="px-4 py-3">Mahasiswa</th>
-                                <th class="px-4 py-3">Semester</th>
-                                <th class="px-4 py-3">Tahun Akademik</th>
-                                <th class="px-4 py-3 text-right">Nilai</th>
+                                <th class="px-3 py-2">Mahasiswa</th>
+                                <th class="px-3 py-2 text-center">Sem</th>
+                                <th class="px-3 py-2">Tahun</th>
+                                <th class="px-3 py-2 text-right">Nilai</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($course->grades as $grade)
                                 <tr>
-                                    <td class="px-4 py-3 font-mono text-sm text-edu-muted">{{ $grade->student->nim }}</td>
-                                    <td class="px-4 py-3 text-sm text-edu-text">{{ $grade->student->nama }}</td>
-                                    <td class="px-4 py-3 text-sm text-edu-muted">{{ $grade->semester }}</td>
-                                    <td class="px-4 py-3 text-sm text-edu-muted">{{ $grade->tahun_akademik }}</td>
-                                    <td class="px-4 py-3 text-right">
+                                    <td class="px-3 py-2">
+                                        <p class="text-sm text-edu-text truncate">{{ $grade->student->nama }}</p>
+                                        <p class="text-sm text-edu-muted font-mono truncate">{{ $grade->student->nim }}</p>
+                                    </td>
+                                    <td class="px-3 py-2 text-sm text-edu-muted text-center">{{ $grade->semester }}</td>
+                                    <td class="px-3 py-2 text-sm text-edu-muted truncate">{{ $grade->tahun_akademik }}</td>
+                                    <td class="px-3 py-2 text-right whitespace-nowrap">
                                         <span class="text-sm font-mono text-edu-text">{{ number_format($grade->nilai, 2) }}</span>
-                                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold
+                                        <span class="ml-1.5 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-semibold
                                             {{ match($grade->grade) {
                                                 'A' => 'bg-edu-success/15 text-edu-success',
                                                 'B' => 'bg-edu-info/15 text-edu-info',

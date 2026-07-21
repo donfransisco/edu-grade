@@ -43,15 +43,15 @@ use Illuminate\Support\Facades\Storage;
 
             <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 border-t border-edu-hairline">
                 <div>
-                    <p class="text-xs text-edu-muted uppercase tracking-wider">Email</p>
+                    <p class="text-sm text-edu-muted uppercase tracking-wider">Email</p>
                     <p class="mt-1 text-sm text-edu-text">{{ $student->email }}</p>
                 </div>
                 <div>
-                    <p class="text-xs text-edu-muted uppercase tracking-wider">Telepon</p>
+                    <p class="text-sm text-edu-muted uppercase tracking-wider">Telepon</p>
                     <p class="mt-1 text-sm text-edu-text">{{ $student->telepon ?: '-' }}</p>
                 </div>
                 <div class="sm:col-span-2">
-                    <p class="text-xs text-edu-muted uppercase tracking-wider">Alamat</p>
+                    <p class="text-sm text-edu-muted uppercase tracking-wider">Alamat</p>
                     <p class="mt-1 text-sm text-edu-text">{{ $student->alamat ?: '-' }}</p>
                 </div>
             </div>
@@ -63,29 +63,36 @@ use Illuminate\Support\Facades\Storage;
 
             @if ($student->grades->count())
                 <div class="overflow-x-auto">
-                    <table class="edu-table">
+                    <table class="edu-table" style="table-layout: fixed; width: 100%;">
+                        <colgroup>
+                            <col style="width: 40%">
+                            <col style="width: 8%">
+                            <col style="width: 12%">
+                            <col style="width: 20%">
+                            <col style="width: 20%">
+                        </colgroup>
                         <thead>
                             <tr>
-                                <th class="px-4 py-3">Mata Kuliah</th>
-                                <th class="px-4 py-3">SKS</th>
-                                <th class="px-4 py-3">Semester</th>
-                                <th class="px-4 py-3">Tahun Akademik</th>
-                                <th class="px-4 py-3 text-right">Nilai</th>
+                                <th class="px-3 py-2">Mata Kuliah</th>
+                                <th class="px-3 py-2 text-center">SKS</th>
+                                <th class="px-3 py-2 text-center">Sem</th>
+                                <th class="px-3 py-2">Tahun</th>
+                                <th class="px-3 py-2 text-right">Nilai</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($student->grades as $grade)
                                 <tr>
-                                    <td class="px-4 py-3">
-                                        <p class="text-sm text-edu-text">{{ $grade->course->nama }}</p>
-                                        <p class="text-xs text-edu-muted font-mono">{{ $grade->course->kode }}</p>
+                                    <td class="px-3 py-2">
+                                        <p class="text-sm text-edu-text truncate">{{ $grade->course->nama }}</p>
+                                        <p class="text-sm text-edu-muted font-mono truncate">{{ $grade->course->kode }}</p>
                                     </td>
-                                    <td class="px-4 py-3 text-sm text-edu-muted">{{ $grade->course->sks }}</td>
-                                    <td class="px-4 py-3 text-sm text-edu-muted">{{ $grade->semester }}</td>
-                                    <td class="px-4 py-3 text-sm text-edu-muted">{{ $grade->tahun_akademik }}</td>
-                                    <td class="px-4 py-3 text-right">
+                                    <td class="px-3 py-2 text-sm text-edu-muted text-center">{{ $grade->course->sks }}</td>
+                                    <td class="px-3 py-2 text-sm text-edu-muted text-center">{{ $grade->semester }}</td>
+                                    <td class="px-3 py-2 text-sm text-edu-muted truncate">{{ $grade->tahun_akademik }}</td>
+                                    <td class="px-3 py-2 text-right whitespace-nowrap">
                                         <span class="text-sm font-mono text-edu-text">{{ number_format($grade->nilai, 2) }}</span>
-                                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold
+                                        <span class="ml-1.5 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-semibold
                                             {{ match($grade->grade) {
                                                 'A' => 'bg-edu-success/15 text-edu-success',
                                                 'B' => 'bg-edu-info/15 text-edu-info',

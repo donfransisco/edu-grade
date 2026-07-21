@@ -18,11 +18,23 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/dashboard', function () {
+    $allGrades = Grade::all();
+    $gradeDistribution = $allGrades->countBy('grade')->only(['A', 'B', 'C', 'D', 'E'])->sortKeys()->toArray();
+
     $stats = [
         'students' => Student::count(),
         'lecturers' => Lecturer::count(),
         'courses' => Course::count(),
-        'avgGpa' => Grade::all()->map(fn (Grade $g) => $g->gpa)->avg(),
+        'totalGrades' => $allGrades->count(),
+        'avgGpa' => $allGrades->map(fn (Grade $g) => $g->gpa)->avg() ?? 0,
+        'avgGpaBySemester' => $allGrades->groupBy('semester')->map(fn ($grades) => $grades->map(fn (Grade $g) => $g->gpa)->avg())->sortKeys()->toArray(),
+        'gradeDistribution' => $gradeDistribution,
+        'popularCourses' => Course::withCount('grades')
+            ->with('lecturer')
+            ->orderByDesc('grades_count')
+            ->limit(5)
+            ->get(),
+        'recentStudents' => Student::latest()->limit(5)->get(),
         'recentGrades' => Grade::with(['student', 'course'])
             ->latest()
             ->limit(5)

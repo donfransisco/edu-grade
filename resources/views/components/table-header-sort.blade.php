@@ -6,7 +6,7 @@
     $arrow = $isActive ? ($sortDir === 'asc' ? '↑' : '↓') : '';
 @endphp
 
-<th class="px-4 py-3">
+<th class="px-3 py-2">
     <a href="{{ $baseUrl }}?{{ http_build_query(array_merge(request()->query(), ['sort_by' => $field, 'sort_dir' => $nextDir])) }}"
        class="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider {{ $isActive ? 'text-edu-yellow' : 'text-edu-muted hover:text-edu-text' }} transition-colors">
         {{ $label }}

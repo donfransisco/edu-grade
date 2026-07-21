@@ -151,6 +151,64 @@
 
     .edu-table td,
     .edu-table th {
-        @apply px-4 py-3;
+        @apply px-3 py-2;
+    }
+}
+
+/* Print styles */
+@media print {
+    body {
+        background: white !important;
+        color: #111 !important;
+    }
+
+    aside,
+    header,
+    nav,
+    .no-print,
+    button,
+    a[href]::after {
+        display: none !important;
+    }
+
+    main {
+        margin: 0 !important;
+        padding: 1rem !important;
+    }
+
+    .edu-card {
+        background: white !important;
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+    }
+
+    .edu-table {
+        border-collapse: collapse;
+    }
+
+    .edu-table th,
+    .edu-table td {
+        border: 1px solid #ccc !important;
+        color: #111 !important;
+        background: white !important;
+    }
+
+    .edu-table thead th {
+        background: #f0f0f0 !important;
+        color: #111 !important;
+    }
+
+    .edu-stat-number {
+        color: #111 !important;
+    }
+
+    span[class*="bg-edu-success"],
+    span[class*="bg-edu-info"],
+    span[class*="bg-edu-yellow"],
+    span[class*="bg-edu-danger"] {
+        background: transparent !important;
+        border: 1px solid #999 !important;
+        color: #111 !important;
     }
 }
