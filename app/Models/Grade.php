@@ -47,6 +47,11 @@ class Grade extends Model
         };
     }
 
+    public function getGpaAttribute(): float
+    {
+        return self::gradeToPoint($this->grade);
+    }
+
     public static function gradeToPoint(string $grade): float
     {
         return match ($grade) {
