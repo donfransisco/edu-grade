@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,10 +19,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Placeholder routes for sidebar navigation (will be replaced in later stages)
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard/students', fn () => redirect()->route('dashboard'))->name('students.index');
-    Route::get('/dashboard/lecturers', fn () => redirect()->route('dashboard'))->name('lecturers.index');
+    Route::resource('students', StudentController::class);
+    Route::resource('lecturers', LecturerController::class);
+
     Route::get('/dashboard/courses', fn () => redirect()->route('dashboard'))->name('courses.index');
     Route::get('/dashboard/grades', fn () => redirect()->route('dashboard'))->name('grades.index');
     Route::get('/dashboard/transcripts', fn () => redirect()->route('dashboard'))->name('transcripts.index');
